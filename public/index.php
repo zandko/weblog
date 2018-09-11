@@ -115,3 +115,8 @@ function message($message, $type, $url, $seconds = 5)
     }
 }
 
+// 过滤xs
+function e($content)
+{
+    return htmlspecialchars($content);
+}

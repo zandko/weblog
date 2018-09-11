@@ -4,6 +4,28 @@ namespace models;
 
 class Blog extends Base
 {
+    public function add($title, $content, $is_show)
+    {
+        $stmt = self::$pdo->prepare("INSERT INTO blogs(title,content,is_show,user_id) VALUES(?,?,?,?)");
+
+        $ret = $stmt->execute([
+            $title,
+            $content,
+            $is_show,
+            $_SESSION['id'],
+        ]);
+
+        if (!$ret) {
+            echo "发表失败!";
+            echo "<pre>";
+            $error = $stmt->errorInfo();
+            var_dump($error);
+            exit;
+        }
+        // 返回新插入的记录的ID
+        return self::$pdo->lastInsertId();
+    }
+
     public function search()
     {
 

@@ -1,5 +1,6 @@
 /public/contents/
 /public/index.html
+/public/uploads/
 /vendor/
 /composer.lock
 /config.php
