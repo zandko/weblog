@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>提示</h1>
+    <p>
+        <?=$message?>
+    </p>
+    <p><a href="<?=$url?>">点击跳转</a>到下一个页面</p>
+    <p><span id="sec">
+            <?=$seconds?></span> 秒之后自动跳转到下一个页面</p>
+</body>
+
+</html>
+
+<script>
+    // 把秒数保存到js中
+    var sec = "<?=$seconds?>";
+
+    // 获取放秒的span标签
+    var sp = document.getElementById('sec');
+
+    // 启动每秒执行的定时器
+    setInterval(function () {
+        // 秒数减1
+        sec--;
+        // 如果是减到 0 就跳转,否则就更新页面的秒数
+        if (sec == 0) {
+            location.href = "<?=$url?>";
+        } else {
+            // 秒数放到span标签中
+            sp.innerHTML = sec;
+        }
+    }, 1000);
+</script>

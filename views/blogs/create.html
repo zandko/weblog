@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <?php view('common.nav') ?>
+
+    <h1>添加日志</h1>
+    <form action="/user/dologin" method="post">
+        <div>
+            标题:
+            <input type="text" name="title" id="">
+        </div>
+
+        <div>
+            内容:
+            <textarea name="content" id="content" cols="30" rows="10"></textarea>
+        </div>
+
+        <div>
+            是否公开:
+            <input type="radio" name="is_show" value="1" id="" checked> 公开
+            <input type="radio" name="is_show" value="0"> 私有
+        </div>
+
+        <div>
+            <input type="submit" value="发表日志">
+        </div>
+    </form>
+
+    <?php view('common.footer') ?>
+</body>
+
+</html>
+
+<link rel="stylesheet" type="text/css" href="/simditor-2.3.19/site/assets/styles/simditor.css" />
+
+<script type="text/javascript" src="/simditor-2.3.19/site/assets/scripts/jquery.min.js"></script>
+<script type="text/javascript" src="/simditor-2.3.19/site/assets/scripts/module.js"></script>
+<script type="text/javascript" src="/simditor-2.3.19/site/assets/scripts/hotkeys.js"></script>
+<script type="text/javascript" src="/simditor-2.3.19/site/assets/scripts/uploader.js"></script>
+<script type="text/javascript" src="/simditor-2.3.19/site/assets/scripts/simditor.js"></script>
+
+<script>
+    var editor = new Simditor({
+        textarea: $('#content'),
+        toolbar: [
+            'title',
+            'bold',
+            'italic',
+            'underline',
+            'strikethrough',
+            'fontScale',
+            'color',
+            'ol',
+            'ul',
+            'blockquote',
+            'code',
+            'table',
+            'link',
+            'image',
+            'hr',
+            'indent',
+            'outdent',
+            'alignment',
+        ],
+        upload: {
+            url: '/upload/upload',  // 服务器提交的地址
+            params: 'null',
+            fileKey: 'image',       // 服务器接收时的文件名
+            connectionCount: 3,
+            leaveConfirm: '文件上传中,真要离开吗?'
+        }
+    });
+</script>

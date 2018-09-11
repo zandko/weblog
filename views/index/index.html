@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <?php view('common.nav') ?>
+    
+    <h1>最新发表的日志</h1>
+    <ul>
+        <?php foreach($blogs as $v): ?>
+        <li>
+            <a href="/contents/<?=$v['id']?>.html" target="_blank"><?=$v['title']?></a>
+        </li>
+        <?php endforeach; ?>
+    </ul>
+
+    <?php view('common.footer') ?>
+</body>
+</html>

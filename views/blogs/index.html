@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <?php view('common.nav') ?>
+
+    <h1>日志表</h1>
+
+    <form>
+        <div>
+            关键字：
+            <input type="text" name="keyword" id="" value="<?=@$_GET['keyword']?>">
+            发表日期：
+            <input type="text" name="start_date" id="" value="<?=@$_GET['start_date']?>"> ~
+            <input type="text" name="end_date" id="" value="<?=@$_GET['end_date']?>">
+            显示-隐藏
+            <input type="radio" name="is_show" value="" id="" <?php if(@$_GET['is_show']!='1' && @$_GET['is_show']!='0') echo 'checked' ; ?> > 全显示
+            <input type="radio" name="is_show" value="1" id="" <?php if(@$_GET['is_show']=='1') echo 'checked' ; ?> > 显示
+            <input type="radio" name="is_show" value="0" id="" <?php if(@$_GET['is_show']=='0') echo 'checked' ; ?> > 隐藏
+
+            <input type="submit" value="搜索">
+        </div>
+    </form>
+    <br>
+    <table border="1" width="100%">
+        <tr>
+            <th>ID</th>
+            <th width="40%">标题</th>
+            <th>发表日期
+                <a href="?<?=getUrlParams(['odby','odway'])?>odby=date&odway=asc">↑</a>
+                <a href="?<?=getUrlParams(['odby','odway'])?>odby=date&odway=desc">↓</a>
+            </th>
+            <th>修改日期</th>
+            <th>浏览量
+                <a href="?<?=getUrlParams(['odby','odway'])?>odby=display&odway=asc">↑</a>
+                <a href="?<?=getUrlParams(['odby','odway'])?>odby=display&odway=desc">↓</a>
+            </th>
+            <th>是否显示</th>
+            <th>操作</th>
+        </tr>
+
+        <?php foreach($data['blogs'] as $v): ?>
+
+        <tr>
+            <td>
+                <?=$v['id']?>
+            </td>
+            <td>
+                <a href="/contents/<?=$v['id']?>.html"><?=$v['title']?></a>
+            </td>
+            <td>
+                <?=$v['created_at']?>
+            </td>
+            <td>
+                <?=$v['updated_at']?>
+            </td>
+            <td>
+                <?=$v['display']?>
+            </td>
+            <td>
+                <?= $v['is_show']==1 ? '显示' : '不显示'  ?>
+            </td>
+            <td>
+                <a href="">修改</a>
+                <a href="">删除</a>
+            </td>
+        </tr>
+
+        <?php endforeach; ?>
+
+    </table>
+
+    <br>
+
+    <?=$data['btns']?>
+
+    <?php view('common.footer') ?>
+</body>
+
+</html>

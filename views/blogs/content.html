@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <?php view('common.nav') ?>
+
+    <h1>
+        <?=$blogs['title']?>
+    </h1>
+    <p>浏览量：<span id="display"></span></p>
+    <p>
+        <?=$blogs['content']?>
+    </p>
+
+    <?php view('common.footer') ?>
+</body>
+
+</html>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+<script>
+    // 更新和获取浏览量
+    // 获取当前日志的ID
+    var id = "<?=$blogs['id']?>";
+
+    // 定义接口地址
+    var url = "/blog/display?id=" + id;
+
+    // 请求这个地址
+    $.ajax({
+        type: "GET",
+        url: url,
+        success: function (data) {
+            // 把返回的浏览量放到页面
+            $("#display").html(data);
+        }
+    });
+</script>
