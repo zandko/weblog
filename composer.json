@@ -1,6 +1,7 @@
 {
     "require": {
         "predis/predis": "^1.1",
-        "swiftmailer/swiftmailer": "^6.1"
+        "swiftmailer/swiftmailer": "^6.1",
+        "ezyang/htmlpurifier": "^4.10"
     }
 }
