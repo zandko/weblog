@@ -4,6 +4,27 @@ namespace models;
 
 class Blog extends Base
 {
+    // 为某一个日志生成静态页面
+    public function makeHtml($id)
+    {
+        // 1、取出日志的信息
+        $blog = $this->find($id);
+        // 2、打开缓冲区、并且加载视图到缓冲区
+        ob_start();
+        view('blogs.content', [
+            'blogs' => $blog,
+        ]);
+        // 3、从缓冲区中取出视图并写到静态页中
+        $str = ob_get_clean();
+        file_put_contents(ROOT . 'public/contents/' . $id . '.html',$str);
+    }
+
+    // 删除静态页
+    public function deleteHtml($id)
+    {
+        @unlink(ROOT . 'public/contents/' . $id . '.html');
+    }
+
     public function find($id)
     {
         $stmt = self::$pdo->prepare("SELECT * FROM blogs WHERE id=?");
@@ -14,7 +35,7 @@ class Blog extends Base
     public function edit($title, $content, $is_show, $id)
     {
         $stmt = self::$pdo->prepare("UPDATE blogs SET title=?,content=?,is_show=? WHERE id=?");
-        $data= $stmt->execute([
+        $data = $stmt->execute([
             $title,
             $content,
             $is_show,

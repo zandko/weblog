@@ -17,6 +17,8 @@ class BlogController
         $id = $_POST['id'];
         $blog = new Blog;
         $blog->delete($id);
+        // 将静态页删掉
+        $blog->deleteHtml($id);
         message('删除成功', 2, '/blog/index');
     }
 
@@ -39,6 +41,15 @@ class BlogController
 
         $blog = new Blog;
         $blog->edit($title, $content, $is_show, $id);
+
+        // 如果日志是公开的就生成静态页
+        if ($is_show == 1) {
+            $blog->makeHtml($id);
+        } else {
+            // 如果改为私有，就要将原来的静态页删掉
+            $blog->deleteHtml($id);
+        }
+
         message('修改成功！', 2, '/blog/index');
     }
 
@@ -49,7 +60,13 @@ class BlogController
         $is_show = $_POST['is_show'];
 
         $blog = new Blog;
-        $blog->add($title, $content, $is_show);
+        $id = $blog->add($title, $content, $is_show);
+        
+        // 如果日志是公开的就生成静态页
+        if ($is_show == 1) {
+            $blog->makeHtml($id);
+        }
+
         message('发表成功!', 2, '/blog/index');
     }
 
