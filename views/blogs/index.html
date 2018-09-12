@@ -54,8 +54,13 @@
                 <?=$v['id']?>
             </td>
             <td>
+                <?php if($v['is_show']==1):?>
                 <a href="/contents/<?=$v['id']?>.html">
                     <?=hpe($v['title'])?></a>
+                <?php else: ?>
+                <a href="/blog/content?id=<?=$v['id']?>">
+                    <?=hpe($v['title'])?></a>
+                <?php endif; ?>
             </td>
             <td>
                 <?=$v['created_at']?>

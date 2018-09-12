@@ -6,6 +6,25 @@ use models\Blog;
 
 class BlogController
 {
+    // 显示私有日志
+    public function content()
+    {
+        // 1、接收ID，并取出日志信息
+        $id = $_GET['id'];
+        $model = new Blog;
+        $blog = $model->find($id);
+
+        // 2、判断这个日志是不是我的日志
+        if ($_SESSION['id'] != $blog['user_id']) {
+            die('无权访问！');
+        }
+
+        // 3、加载视图
+        view('blogs.content', [
+            'blogs' => $blog,
+        ]);
+    }
+
     // 显示添加日志的表单
     public function create()
     {
@@ -61,7 +80,7 @@ class BlogController
 
         $blog = new Blog;
         $id = $blog->add($title, $content, $is_show);
-        
+
         // 如果日志是公开的就生成静态页
         if ($is_show == 1) {
             $blog->makeHtml($id);
