@@ -2,15 +2,15 @@
 
 namespace controllers;
 
-use models\User;
 use models\Order;
+use models\User;
 
 class UserController
-{      
+{
     // 充值界面
     public function charge()
     {
-        view('users.charge'); 
+        view('users.charge');
     }
 
     public function docharge()
@@ -18,14 +18,17 @@ class UserController
         // 生成订单
         $money = $_POST['money'];
         $model = new Order;
-        $model -> create($money);
-        message('充值订单已生成，请立即支付！',2,'/user/orders');
+        $model->create($money);
+        message('充值订单已生成，请立即支付！', 2, '/user/orders');
     }
 
     // 列出所有的订单
     public function orders()
     {
-        view('users.order');
+        $order = new Order;
+        $data = $order->search();
+
+        view('users.order', $data);
     }
 
     public function register()
@@ -55,9 +58,9 @@ class UserController
         $user = new User;
         $data = $user->login($email, $password);
         if ($data) {
-            message('登录成功!',2,'/blog/index');
+            message('登录成功!', 2, '/blog/index');
         } else {
-            message('账号或者密码错误!',2,'/user/login');
+            message('账号或者密码错误!', 2, '/user/login');
         }
     }
 
@@ -127,4 +130,5 @@ class UserController
             die("激活码无效!");
         }
     }
+
 }

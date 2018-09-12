@@ -114,7 +114,7 @@ class BlogController
     {
         // 接收日志ID
         $id = (int) $_GET['id'];
-        $blog = new Blog;
+        $blog = new Blog; 
 
         // 把浏览量+1
         $display = $blog->getDisplay($id);

@@ -24,9 +24,23 @@ class User extends Base
         if ($user) {
             $_SESSION['id'] = $user['id'];
             $_SESSION['email'] = $user['email'];
+            $_SESSION['money'] = $user['money'];
             return true;
         } else {
             return false;
         }
+    }
+
+    // 为用户增加金额
+    public function addMoney($money, $user_id)
+    {
+        $stmt = self::$pdo->prepare("UPDATE users SET money=money+? WHERE id=?");
+        $stmt->execute([
+            $money,
+            $user_id,
+        ]);
+
+        // 更新SESSION中的余额
+        $_SESSION['money'] += $money;
     }
 }

@@ -2,6 +2,8 @@
 
 namespace controllers;
 
+use models\Order;
+use models\User;
 use Yansongda\Pay\Pay;
 
 class AlipayController
@@ -23,15 +25,28 @@ class AlipayController
     // 跳转到支付宝
     public function pay()
     {
-        $order = [
-            'out_trade_no' => time(), // 本地订单ID
-            'total_amount' => '0.01', // 支付金额
-            'subject' => 'test subject', // 支付标题
-        ];
+        // 接受订单编号
+        $sn = $_POST['sn'];
+        // 取出订单信息
+        $order = new Order;
+        // 根据订单编号取出订单信息
+        $data = $order->findBySn($sn);
 
-        $alipay = Pay::alipay($this->config)->web($order);
+        // 如果订单还未支付就跳到支付宝
+        if ($data['status'] == 0) {
 
-        $alipay->send();
+            $order = [
+                'out_trade_no' => $sn, // 本地订单ID
+                'total_amount' => $data['money'], // 支付金额
+                'subject' => '智聊系统用户充值：' . $data['money'] . '元', // 支付标题
+            ];
+
+            $alipay = Pay::alipay($this->config)->web($order);
+            $alipay->send();
+        } else {
+            die('订单状态不允许支付～');
+        }
+
     }
 
     // 支付完成跳回
@@ -51,11 +66,28 @@ class AlipayController
             // 这里需要对 trade_status 进行判断及其它逻辑进行判断，在支付宝的业务通知中，只有交易通知状态为 TRADE_SUCCESS 或 TRADE_FINISHED 时，支付宝才会认定为买家付款成功。
             // 1、商户需要验证该通知数据中的out_trade_no是否为商户系统中创建的订单号；
             // 2、判断total_amount是否确实为该订单的实际金额（即商户订单创建时的金额）；
-            echo '订单ID：' . $data->out_trade_no . "\r\n";
-            echo '支付总金额：' . $data->total_amount . "\r\n";
-            echo '支付状态：' . $data->trade_status . "\r\n";
-            echo '商户ID：' . $data->seller_id . "\r\n";
-            echo 'app_id：' . $data->app_id . "\r\n";
+            // 支付成功
+            if ($data->trade_status == 'TRADE_SUCCESS' || $data->trado_status == 'TRADE_FINISHED') {
+                // 更新订单状态
+                $order = new Order;
+                // 获取订单信息
+                $orderInfo = $order->findBySn($data->out_trade_no);
+                // 如果订单的状态为未支付状态，说明第一次收到消息，更新订单状态
+                if ($orderInfo['status'] == 0) {
+                    // 设置订单为已支付状态
+                    $order->setPaid($data->out_trade_no);
+
+                    // 更新用户余额
+                    $user = new User;
+                    $user->addMoney($orderInfo['money'], $orderInfo['user_id']);
+                }
+
+            }
+            // echo '订单ID：' . $data->out_trade_no . "\r\n";
+            // echo '支付总金额：' . $data->total_amount . "\r\n";
+            // echo '支付状态：' . $data->trade_status . "\r\n";
+            // echo '商户ID：' . $data->seller_id . "\r\n";
+            // echo 'app_id：' . $data->app_id . "\r\n";
         } catch (\Exception $e) {
             echo '失败：';
             var_dump($e->getMessage());
@@ -78,7 +110,7 @@ class AlipayController
             ]);
             if ($ret->code == 10000) {
                 echo '退款成功！';
-            }else {
+            } else {
                 echo '失败！';
                 var_dump($ret);
             }

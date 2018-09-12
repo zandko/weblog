@@ -14,7 +14,7 @@
     var si = setInterval(function () {
         s--;
         if (s == 0) {
-            m.style.display='none';
+            m.style.display = 'none';
             clearInterval(si);
         }
     }, 1000);
@@ -22,17 +22,24 @@
 
 <h1>智聊系统</h1>
 <a href="/">首页</a>
-<a href="/user/charge">充值</a>
-<a href="/blog/index">日志列表</a>
-
 
 <?php if(isset($_SESSION['id'])): ?>
+
+<a href="/user/charge">充值</a>
+<a href="/blog/index">日志列表</a>
+<a href="/user/orders">充值列表</a>
+
 <?=$_SESSION['email']?>
+(<span style="color:#f00;font-weight:bold;">$_SESSION['money']</span>>元)
+
 <a href="/blog/create">发表日志</a>
 <a href="/user/logout">退出</a>
+
 <?php else: ?>
+
 <a href="/user/register">注册</a>
 <a href="/user/login">登录</a>
+
 <?php endif; ?>
 
 <hr>
