@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <?php view('common.nav') ?>
+
+    <h1>充值</h1>
+    <form action="/user/docharge" method="post">
+        <?php csrf_filed() ?>
+        <div>
+            充值金额:
+            <input type="text" name="money">
+        </div>
+
+        
+
+        <div>
+            <input type="submit" value="充值">
+        </div>
+    </form>
+
+    <?php view('common.footer') ?>
+</body>
+
+</html>

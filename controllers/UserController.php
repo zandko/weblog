@@ -3,9 +3,31 @@
 namespace controllers;
 
 use models\User;
+use models\Order;
 
 class UserController
-{
+{      
+    // 充值界面
+    public function charge()
+    {
+        view('users.charge'); 
+    }
+
+    public function docharge()
+    {
+        // 生成订单
+        $money = $_POST['money'];
+        $model = new Order;
+        $model -> create($money);
+        message('充值订单已生成，请立即支付！',2,'/user/orders');
+    }
+
+    // 列出所有的订单
+    public function orders()
+    {
+        view('users.order');
+    }
+
     public function register()
     {
         view('users.register');
