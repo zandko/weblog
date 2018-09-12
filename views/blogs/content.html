@@ -10,8 +10,8 @@
 
 <body>
 
-    <?php view('common.nav') ?>
-
+    <h1>智聊系统</h1>
+    <div id="menu"></div>
     <h1>
         <?=$blogs['title']?>
     </h1>
@@ -38,9 +38,25 @@
     $.ajax({
         type: "GET",
         url: url,
+        dataType: 'json',
         success: function (data) {
             // 把返回的浏览量放到页面
-            $("#display").html(data);
+            $("#display").html(data.display);
+
+            var html = "<a href='/'>首页</a>";
+            // 判断登录s
+            if (data.email == '') {
+                html += `<a href='/blog/register'>注册</a>
+                        <a href='/blog/login'>登录</a>`;
+            }
+            else {
+                html += data.email +
+                    `<a href='/blog/index'>日志列表</a>
+                <a href='/blog/create'>发表日志</a>
+                <a href='/user/logout'>退出</a>`;
+            }
+
+            $("#menu").html(html);
         }
     });
 </script>

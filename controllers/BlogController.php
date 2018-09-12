@@ -116,7 +116,14 @@ class BlogController
         $id = (int) $_GET['id'];
         $blog = new Blog;
 
-        echo $blog->getDisplay($id);
+        // 把浏览量+1
+        $display = $blog->getDisplay($id);
+
+        // 返回多个数据必须要用 JSON
+        echo json_encode([
+            'display' => $display,
+            'email' => isset($_SESSION['email']) ? $_SESSION['email'] : '',
+        ]);
     }
 
     public function displayToDb()
