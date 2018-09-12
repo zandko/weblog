@@ -17,7 +17,29 @@ class BlogController
         $id = $_POST['id'];
         $blog = new Blog;
         $blog->delete($id);
-        message('删除成功',2,'/blog/index');
+        message('删除成功', 2, '/blog/index');
+    }
+
+    public function edit()
+    {
+        $id = $_GET['id'];
+        $blog = new Blog;
+        $data = $blog->find($id);
+        view('blogs.edit', [
+            'blog' => $data,
+        ]);
+    }
+
+    public function doedit()
+    {
+        $title = $_POST['title'];
+        $content = $_POST['content'];
+        $is_show = $_POST['is_show'];
+        $id = $_POST['id'];
+
+        $blog = new Blog;
+        $blog->edit($title, $content, $is_show, $id);
+        message('修改成功！', 2, '/blog/index');
     }
 
     public function store()

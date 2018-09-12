@@ -4,6 +4,24 @@ namespace models;
 
 class Blog extends Base
 {
+    public function find($id)
+    {
+        $stmt = self::$pdo->prepare("SELECT * FROM blogs WHERE id=?");
+        $stmt->execute([$id]);
+        return $stmt->fetch();
+    }
+
+    public function edit($title, $content, $is_show, $id)
+    {
+        $stmt = self::$pdo->prepare("UPDATE blogs SET title=?,content=?,is_show=? WHERE id=?");
+        $data= $stmt->execute([
+            $title,
+            $content,
+            $is_show,
+            $id,
+        ]);
+    }
+
     public function delete($id)
     {
         $stmt = self::$pdo->prepare("DELETE FROM blogs WHERE id =? AND user_id =?");

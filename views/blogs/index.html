@@ -71,7 +71,7 @@
             </td>
 
             <td>
-                <a href="">修改</a>
+                <a href="/blog/edit?id=<?=$v['id']?>">修改</a>
                 <form action="/blog/delete" method="post">
                     <input type="hidden" name="id" value="<?=$v['id']?>">
                     <?php csrf_filed() ?>
