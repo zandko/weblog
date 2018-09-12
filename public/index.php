@@ -6,6 +6,16 @@ ini_set('session.save_path', 'tcp://127.0.0.1:6379?database=3');
 
 session_start();
 
+// 验证CSRF令牌  如果用户以post方式访问网站时 需要验证令牌
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if (!isset($_POST['_token'])) {
+        die('违法操作！');
+    }
+    if ($_POST['_token'] != $_SESSION['token']) {
+        die('违法操作');
+    }
+}
+
 define('ROOT', dirname(__FILE__) . '/../');
 
 // composer 自动加载文件
@@ -123,7 +133,7 @@ function e($content)
 
 // 使用 htmlpurifer 过滤
 function hpe($content)
-{   
+{
     // 一直保存在内存中（直到脚本执行结束）
     static $purifier = null;
 
@@ -156,4 +166,22 @@ function hpe($content)
     $clean_html = $purifier->purify($content);
 
     return $clean_html;
+}
+
+function csrf()
+{
+    // 生成随机的字符串
+    if (!isset($_SESSION['token'])) {
+        $token = md5(rand(1, 99999) . microtime());
+        $_SESSION['token'] = $token;
+    }
+
+    return $_SESSION['token'];
+}
+
+// 生成令牌隐藏域
+function csrf_filed()
+{
+    $csrf = isset($_SESSION['token']) ? $_SESSION['token'] : csrf();
+    echo "<input type='hidden' name='_token' value='{$csrf}'>";
 }

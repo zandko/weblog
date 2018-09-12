@@ -3,8 +3,6 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
 </head>
 
@@ -21,11 +19,11 @@
             <input type="text" name="start_date" id="" value="<?=@$_GET['start_date']?>"> ~
             <input type="text" name="end_date" id="" value="<?=@$_GET['end_date']?>">
             显示-隐藏
-            <input type="radio" name="is_show" value="" id="" <?php if(@$_GET['is_show']!='1' && @$_GET['is_show']!='0'
-                ) echo 'checked' ; ?> > 全显示
-            <input type="radio" name="is_show" value="1" id="" <?php if(@$_GET['is_show']=='1' ) echo 'checked' ; ?> >
+            <input type="radio" name="is_show" value="" <?php if(@$_GET['is_show']!='1' && @$_GET['is_show']!='0' )
+                echo 'checked' ; ?> > 全显示
+            <input type="radio" name="is_show" value="1" <?php if(@$_GET['is_show']=='1' ) echo 'checked' ; ?> >
             显示
-            <input type="radio" name="is_show" value="0" id="" <?php if(@$_GET['is_show']=='0' ) echo 'checked' ; ?> >
+            <input type="radio" name="is_show" value="0" <?php if(@$_GET['is_show']=='0' ) echo 'checked' ; ?> >
             隐藏
 
             <input type="submit" value="搜索">
@@ -57,7 +55,7 @@
             </td>
             <td>
                 <a href="/contents/<?=$v['id']?>.html">
-                    <?=e($v['title'])?></a>
+                    <?=hpe($v['title'])?></a>
             </td>
             <td>
                 <?=$v['created_at']?>
@@ -71,10 +69,16 @@
             <td>
                 <?= $v['is_show']==1 ? '显示' : '不显示'  ?>
             </td>
+
             <td>
                 <a href="">修改</a>
-                <a href="">删除</a>
+                <form action="/blog/delete" method="post">
+                    <input type="hidden" name="id" value="<?=$v['id']?>">
+                    <?php csrf_filed() ?>
+                    <input type="submit" value="删除">
+                </form>
             </td>
+
         </tr>
 
         <?php endforeach; ?>

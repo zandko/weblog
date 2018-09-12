@@ -12,6 +12,14 @@ class BlogController
         view('blogs.create');
     }
 
+    public function delete()
+    {
+        $id = $_POST['id'];
+        $blog = new Blog;
+        $blog->delete($id);
+        message('删除成功',2,'/blog/index');
+    }
+
     public function store()
     {
         $title = $_POST['title'];
@@ -20,7 +28,7 @@ class BlogController
 
         $blog = new Blog;
         $blog->add($title, $content, $is_show);
-        message('发表成功!',2,'/blog/index');
+        message('发表成功!', 2, '/blog/index');
     }
 
     // 日志列表

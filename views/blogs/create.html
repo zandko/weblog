@@ -3,8 +3,6 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
 </head>
 
@@ -14,9 +12,11 @@
 
     <h1>添加日志</h1>
     <form action="/blog/store" method="post">
+
+        <input type="hidden" name="_token" value="<?=csrf()?>">
         <div>
             标题:
-            <input type="text" name="title" id="">
+            <input type="text" name="title" >
         </div>
 
         <div>
@@ -26,7 +26,7 @@
 
         <div>
             是否公开:
-            <input type="radio" name="is_show" value="1" id="" checked> 公开
+            <input type="radio" name="is_show" value="1"  checked> 公开
             <input type="radio" name="is_show" value="0"> 私有
         </div>
 

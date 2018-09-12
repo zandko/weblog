@@ -4,6 +4,15 @@ namespace models;
 
 class Blog extends Base
 {
+    public function delete($id)
+    {
+        $stmt = self::$pdo->prepare("DELETE FROM blogs WHERE id =? AND user_id =?");
+        $stmt->execute([
+            $id,
+            $_SESSION['id'],
+        ]);
+
+    }
     public function add($title, $content, $is_show)
     {
         $stmt = self::$pdo->prepare("INSERT INTO blogs(title,content,is_show,user_id) VALUES(?,?,?,?)");
@@ -28,8 +37,8 @@ class Blog extends Base
 
     public function search()
     {
-
-        $where = 1;
+        // 取出当前用户的日志
+        $where = 'user_id=' . $_SESSION['id'];
         $value = [];
 
         if (isset($_GET['keyword']) && $_GET['keyword']) {

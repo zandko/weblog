@@ -5,3 +5,4 @@
 /composer.lock
 /config.php
 /logs/
+/cache/HTML/
