@@ -3,7 +3,7 @@
 namespace models;
 
 class User extends Base
-{   
+{
     public function add($email, $password)
     {
         $stmt = self::$pdo->prepare("INSERT INTO users(email,password) VALUES(?,?)");
@@ -42,5 +42,15 @@ class User extends Base
 
         // 更新SESSION中的余额
         $_SESSION['money'] += $money;
+    }
+
+    // 更新余额
+    public function update_money($id)
+    {
+        $stmt = self::$pdo->prepare("SELECT money FROM users WHERE id=?");
+        $stmt->execute([
+            $id,
+        ]);
+        return $stmt->fetch(\PDO::FETCH_COLUMN);
     }
 }

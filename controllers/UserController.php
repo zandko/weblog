@@ -13,6 +13,15 @@ class UserController
         view('users.charge');
     }
 
+    public function update_money()
+    {   
+        $id = $_SESSION['id'];
+        $user = new User;
+        $money = $user->update_money($id);
+        
+        echo $money;
+    }
+
     public function docharge()
     {
         // 生成订单

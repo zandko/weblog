@@ -30,7 +30,8 @@
 <a href="/user/orders">充值列表</a>
 
 <?=$_SESSION['email']?>
-(<span style="color:#f00;font-weight:bold;"><?=$_SESSION['money']?></span>>元)
+(<span id="money" style="color:#f00;font-weight:bold;">
+    <?=$_SESSION['money']?></span>>元 <input onclick='money()' type="button" value="更新"> )
 
 <a href="/blog/create">发表日志</a>
 <a href="/user/logout">退出</a>
@@ -43,3 +44,25 @@
 <?php endif; ?>
 
 <hr>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+
+<script>
+    var aa = "<?=$_SESSION['money']?>";
+    var id = "<?=$_SESSION['id']?>";
+    var url = "/user/update_money?id=" + id;
+    function money() {
+        $.ajax({
+            type: 'GET',
+            url: '/user/update_money',
+            success: function (data) {
+
+                $('#money').html(data);
+                
+            }
+
+        })
+    }
+
+</script>
