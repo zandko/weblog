@@ -31,6 +31,15 @@ class UserController
         view('users.order', $data);
     }
 
+    // 删除订单
+    public function delete()
+    {
+        $id = $_POST['id'];
+        $order = new Order;
+        $order->delete($id);
+        message('删除成功', 2, '/user/orders');
+    }
+
     public function register()
     {
         view('users.register');

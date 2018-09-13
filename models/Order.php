@@ -16,6 +16,17 @@ class Order extends Base
         ]);
     }
 
+    // 删除订单
+    public function delete($id)
+    {
+        $stmt = self::$pdo->prepare("DELETE FROM orders WHERE id =? AND user_id =?");
+        $stmt->execute([
+            $id,
+            $_SESSION['id'],
+        ]);
+ 
+    }
+
     // 搜索订单
     public function search()
     {   

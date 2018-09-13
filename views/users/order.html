@@ -53,6 +53,13 @@
                     <input type="submit" value="立即支付">
                 </form>
                 <?php endif; ?>
+
+                <form action="/user/delete" method="post">
+                    <?php csrf_filed() ?>
+                    <input type="hidden" name="id" value="<?=$v['id']?>">
+                    <input type="submit" value="删除">
+                </form>
+
             </td>
 
         </tr>

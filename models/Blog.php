@@ -16,7 +16,7 @@ class Blog extends Base
         ]);
         // 3、从缓冲区中取出视图并写到静态页中
         $str = ob_get_clean();
-        file_put_contents(ROOT . 'public/contents/' . $id . '.html',$str);
+        file_put_contents(ROOT . 'public/contents/' . $id . '.html', $str);
     }
 
     // 删除静态页
@@ -52,6 +52,7 @@ class Blog extends Base
         ]);
 
     }
+    
     public function add($title, $content, $is_show)
     {
         $stmt = self::$pdo->prepare("INSERT INTO blogs(title,content,is_show,user_id) VALUES(?,?,?,?)");
@@ -170,7 +171,7 @@ class Blog extends Base
         view('index.index', [
             'blog' => $blogs,
         ]);
-        
+
         $str = ob_get_contents();
         file_put_contents(ROOT . 'public/index.html', $str);
     }

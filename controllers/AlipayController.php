@@ -11,7 +11,7 @@ class AlipayController
     public $config = [
         'app_id' => '2016091700531963',
         // 通知地址
-        'notify_url' => 'http://requestbin.fullcontact.com/1lw358y1',
+        'notify_url' => 'http://requestbin.fullcontact.com/1bwmy7a1',
         // 跳回地址
         'return_url' => 'http://localhost:9999/alipay/return',
         // 支付宝公钥
@@ -75,7 +75,7 @@ class AlipayController
                 // 如果订单的状态为未支付状态，说明第一次收到消息，更新订单状态
                 if ($orderInfo['status'] == 0) {
                     // 设置订单为已支付状态
-                    $order->setPaid($data->out_trade_no);
+                    $order->setPay($data->out_trade_no);
 
                     // 更新用户余额
                     $user = new User;
