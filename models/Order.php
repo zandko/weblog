@@ -18,7 +18,7 @@ class Order extends Base
 
     // 搜索订单
     public function search()
-    {
+    {   
         // 取出当前用户的订单
         $where = 'user_id=' . $_SESSION['id'];
 

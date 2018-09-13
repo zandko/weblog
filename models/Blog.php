@@ -154,6 +154,13 @@ class Blog extends Base
 
     }
 
+    public function index_index()
+    {
+        $stmt = self::$pdo->query("SELECT * FROM blogs WHERE is_show=1 ORDER BY  id  DESC LIMIT 20");
+        $blogs = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        return $blogs;
+    }
+
     public function index_html()
     {
         $stmt = self::$pdo->query("SELECT * FROM blogs WHERE is_show=1 ORDER BY  id  DESC LIMIT 20");
@@ -161,9 +168,9 @@ class Blog extends Base
 
         ob_start();
         view('index.index', [
-            'blogs' => $blogs,
+            'blog' => $blogs,
         ]);
-
+        
         $str = ob_get_contents();
         file_put_contents(ROOT . 'public/index.html', $str);
     }

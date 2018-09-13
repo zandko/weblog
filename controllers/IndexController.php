@@ -2,9 +2,15 @@
 
 namespace controllers;
 
+use models\Blog;
+
 class IndexController
 {
     public function index() {
-        view('index.index');
+        $index = new Blog;
+        $blog = $index -> index_index();
+        view('index.index',[
+            'blog' => $blog,
+        ]);
     }
 }
