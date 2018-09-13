@@ -74,7 +74,7 @@ class Order extends Base
     public function setPay($sn)
     {
         $stmt = self::$pdo->prepare("UPDATE orders SET status=1,pay_time=now() WHERE sn=?");
-        $stmt->execute([
+        return $stmt->execute([
             $sn,
         ]);
     }

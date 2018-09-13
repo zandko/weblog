@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>扫码完成支付</h1>
+    <img src="/qrcode/qrcode?code=<?=$code?>">
+</body>
+
+</html>
+<script src="/simditor-2.3.6/scripts/jquery.min.js"></script>
+<script>
+    var sn = "<?=$sn?>";
+    function check() {
+        $.ajax({
+            type: "GET",
+            url: "/user/orderStatus?sn=" + sn,
+            success: function (data) {
+                if (data == 1) {
+                    alert("支付成功！");
+                    // 关闭页面
+                    window.close();
+                }
+                else {
+                    // 1秒之后执行一次
+                    setTimeout(check, 1000);
+                }
+            }
+        });
+    }
+    // 1秒之后执行一次
+    setTimeout(check, 1000);
+</script>

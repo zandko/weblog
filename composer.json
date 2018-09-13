@@ -3,6 +3,7 @@
         "predis/predis": "^1.1",
         "swiftmailer/swiftmailer": "^6.1",
         "ezyang/htmlpurifier": "^4.10",
-        "yansongda/pay": "^2.4"
+        "yansongda/pay": "^2.4",
+        "endroid/qr-code": "^3.4"
     }
 }

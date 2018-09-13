@@ -74,20 +74,29 @@ class AlipayController
                 $orderInfo = $order->findBySn($data->out_trade_no);
                 // 如果订单的状态为未支付状态，说明第一次收到消息，更新订单状态
                 if ($orderInfo['status'] == 0) {
-                    // 设置订单为已支付状态
-                    $order->setPay($data->out_trade_no);
 
+                    // 开启事务
+                    $order->startTrans();
+
+                    // 设置订单为已支付状态
+                    $ret1 = $order->setPay($data->out_trade_no);
                     // 更新用户余额
                     $user = new User;
-                    $user->addMoney($orderInfo['money'], $orderInfo['user_id']);
+                    $ret2 = $user->addMoney($orderInfo['money'], $orderInfo['user_id']);
+
+                    // 判断
+                    if ($ret1 && $ret2) {
+                        // 提交事务
+                        $order->commit();
+                        echo '成功';
+                    } else {
+                        // 回滚事务
+                        $order->rollback();
+                        echo '失败';
+                    }
                 }
 
             }
-            // echo '订单ID：' . $data->out_trade_no . "\r\n";
-            // echo '支付总金额：' . $data->total_amount . "\r\n";
-            // echo '支付状态：' . $data->trade_status . "\r\n";
-            // echo '商户ID：' . $data->seller_id . "\r\n";
-            // echo 'app_id：' . $data->app_id . "\r\n";
         } catch (\Exception $e) {
             echo '失败：';
             var_dump($e->getMessage());

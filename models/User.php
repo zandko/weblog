@@ -35,22 +35,23 @@ class User extends Base
     public function addMoney($money, $user_id)
     {
         $stmt = self::$pdo->prepare("UPDATE users SET money=money+? WHERE id=?");
-        $stmt->execute([
+        return $stmt->execute([
             $money,
             $user_id,
         ]);
-
-        // 更新SESSION中的余额
-        $_SESSION['money'] += $money;
     }
 
     // 更新余额
-    public function update_money($id)
+    public function getMoney()
     {
         $stmt = self::$pdo->prepare("SELECT money FROM users WHERE id=?");
         $stmt->execute([
-            $id,
+            $_SESSION['id']
         ]);
-        return $stmt->fetch(\PDO::FETCH_COLUMN);
+        $money = $stmt->fetch(\PDO::FETCH_COLUMN);
+
+        // 更新到session中
+        $_SESSION['money'] = $money;
+        return $money;
     }
 }
