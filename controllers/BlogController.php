@@ -8,6 +8,37 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class BlogController
 {
+    // 点赞
+    public function agreements()
+    {
+        $id = $_GET['id'];
+        // 判断登录
+        if (!isset($_SESSION['id'])) {
+            echo json_encode([
+                'status_code' => '403',
+                'message' => '必须先登录',
+            ]);
+            exit;
+        }
+
+        // 判断是否已经点过这篇日志
+        $model = new Blog;
+        $ret = $model->agree($id);
+        if ($ret) {
+            echo json_encode([
+                'status_code' => '200',
+            ]);
+            exit;
+        } else {
+            echo json_encode([
+                'status_code' => '403',
+                'message' => '已经点过了',
+            ]);
+            exit;
+        }
+
+    }
+
     public function makeExcel()
     {
         // 数据库中取出数据

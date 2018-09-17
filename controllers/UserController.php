@@ -74,26 +74,23 @@ class UserController
         view('users.album');
     }
 
+    // 设置头像
     public function setavatar()
     {
-        // 先创建目录
-        $root = ROOT . 'public/uploads/';
-        // 当前日期文件夹
-        $date = date('Y-m-d');
+        $upload = \libs\Uploader::make();
+        $path = $upload->upload('avatar', 'avatar');
 
-        // 判断存不存在，不存在则创建
-        if (!is_dir($root . $date)) {
-            mkdir($root . $date, 0777);
-        }
+        // 保存到user表中
+        $user = new User;
+        $user->setAvatar('/uploads/' . $path);
+        // // 删除原头像
+        @unlink(ROOT . 'public' . $_SESSION['avatar']);
 
-        // 唯一文件名
-        $name = md5(time() . rand(1, 9999));
-        // 文件名后缀
-        $ext = strrchr($_FILES['avatar']['name'], '.');
+        // 设置新头像
+        $_SESSION['avatar'] = '/uploads/' . $path;
 
-        $name = $name . $ext;
-        // 移动图片
-        move_uploaded_file($_FILES['avatar']['tmp_name'], $root . $date . '/' . $name);
+        message('设置成功', 2, '/blog/index');
+
     }
 
     public function avatar()

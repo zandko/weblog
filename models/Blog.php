@@ -4,6 +4,28 @@ namespace models;
 
 class Blog extends Base
 {
+    public function agree($id)
+    {
+        $stmt = self::$pdo->prepare('SELECT COUNT(*) FROM blog_agrees WHERE user_id=? AND blog_id=?');
+        $stmt->execute([
+            $_SESSION['id'],
+            $id,
+        ]);
+
+        $count = $stmt->fetch(PDO::FETCH_COLUMN);
+        if ($count) {
+            return false;
+        }
+
+        // 点赞
+        $stmt = self::$pdo->prepare("INSERT INTO blog_agrees(user_id,blog_id) VALUES(?,?)");
+        return $stmt->execute([
+            $_SESSION['id'],
+            $id,
+        ]);
+
+    }
+
     public function getNew()
     {
         $stmt = self::$pdo->prepare("SELECT * FROM blogs ORDER BY created_at DESC LIMIT 10");
