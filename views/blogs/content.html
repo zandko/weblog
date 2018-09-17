@@ -19,7 +19,7 @@
     <p>
         <?=$blogs['content']?>
     </p>
-
+    <img id="btn-agree" src="/images/agree.jpeg" alt="">
     <?php view('common.footer') ?>
 </body>
 
@@ -58,5 +58,20 @@
 
             $("#menu").html(html);
         }
+    });
+
+    $("#btn-agree").click(function () {
+        $.ajax({
+            type: "POST",
+            url: "/blog/agreements?id=" + id,
+            dataType: "json",
+            success: function (data) {
+                if (data.status_code == '200') {
+                    alert('点赞成功');
+                } else {
+                    alert(data.message);
+                }
+            }
+        });
     });
 </script>
