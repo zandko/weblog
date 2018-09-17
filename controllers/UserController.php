@@ -6,7 +6,48 @@ use models\Order;
 use models\User;
 
 class UserController
-{   
+{
+    public function uploadbig()
+    {
+        // 总的数量
+        $count = $_POST['count'];
+        // 当前是第几块
+        $i = $_POST['i'];
+        // 每块大小
+        $size = $_POST['size'];
+        // 图片
+        $img = $_FILES['img'];
+
+        // 所有分块的名字
+        $name = 'big_img_' . $_POST['img_name'];
+        // 保存每个分片
+        move_uploaded_file($img['tmp_name'], ROOT . 'tmp/' . $i);
+        // 链接redis
+        $redis = \libs\Redis::getInstance();
+        // 上传图片数量+1
+        $uploadedCount = $redis->incr($name);
+
+        // 上传数量等于总的数量时合并文件
+        if ($uploadedCount == $count) {
+            // 以追回的方式创建并打开最终的大文件
+            $fp = fopen(ROOT . 'public/uploads/big/' . $name . '.png', 'a');
+
+            // 循环所有的分片
+            for ($i = 0; $i < $count; $i++) {
+                // 读取第i号文件并写到大文件中
+                fwrite($fp, file_get_contents(ROOT . 'tmp/' . $i));
+                // 删除第i号临时文件
+                unlink(ROOT . 'tmp/' . $i);
+            }
+
+            // 关闭文件
+            fclose($fp);
+            // 从redis 中删除这个文件对应的编号这个变量
+            $redis->del($name);
+        }
+
+    }
+
     // 多张上传
     public function uploadAll()
     {

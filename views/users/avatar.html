@@ -15,7 +15,7 @@
         <?php csrf_filed() ?>
         <div>
             上传头像:
-            <input type="file" name="avatar">
+            <input id="img" type="file" name="avatar">
         </div>
 
         <div>
@@ -27,3 +27,47 @@
 </body>
 
 </html>
+
+<script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+
+<script>
+    var img = document.getElementById('img');
+    img.onchange = function () {
+        // 获取选中的第一张图片
+        var img1 = this.files[0];
+        // 获取这张图片的尺寸
+        var fileSize = img1.size;
+
+        // 每块的尺寸
+        var perSize = 4096;
+
+        // 计算一下总的块数
+        var count = Math.ceil(fileSize / perSize);
+        
+        // 为所有分片生成一个随机唯一的名字
+        var name = "img_"+Math.random(1,99999);
+
+        for (var i = 0; i < count; i++) {
+            var img0 = img1.slice(i * perSize, i * perSize + perSize)
+            // 创建一个FormData()
+            var f = new FormData()
+            // 加入到表单中
+            f.append('img', img0) //图片数据
+            f.append('count', count) //总的块数
+            f.append('i', i) // 当前图片是第几块
+            f.append('size',perSize) //每块尺寸
+            f.append('img_name',name) // 名字
+            // 上传到服务器
+            $.ajax({
+                type: 'POST',
+                url: '/user/uploadbig',
+                data: f,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+
+                }
+            });
+        }
+    }
+</script>
