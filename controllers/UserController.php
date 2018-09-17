@@ -6,7 +6,59 @@ use models\Order;
 use models\User;
 
 class UserController
-{
+{   
+    // 多张上传
+    public function uploadAll()
+    {
+        $root = ROOT . 'public/uploads/';
+        $date = date('Y-m-d');
+
+        if (!is_dir($root . $date)) {
+            mkdir($root . $date, 0777);
+        }
+
+        foreach ($_FILES['images']['name'] as $k => $v) {
+            $name = md5(time() . rand(1, 9999));
+
+            $ext = strrchr($v, '.');
+
+            $name = $name . $ext;
+
+            move_uploaded_file($_FILES['images']['tmp_name'][$k], $root . $date . '/' . $name);
+        }
+    }
+
+    public function album()
+    {
+        view('users.album');
+    }
+
+    public function setavatar()
+    {
+        // 先创建目录
+        $root = ROOT . 'public/uploads/';
+        // 当前日期文件夹
+        $date = date('Y-m-d');
+
+        // 判断存不存在，不存在则创建
+        if (!is_dir($root . $date)) {
+            mkdir($root . $date, 0777);
+        }
+
+        // 唯一文件名
+        $name = md5(time() . rand(1, 9999));
+        // 文件名后缀
+        $ext = strrchr($_FILES['avatar']['name'], '.');
+
+        $name = $name . $ext;
+        // 移动图片
+        move_uploaded_file($_FILES['avatar']['tmp_name'], $root . $date . '/' . $name);
+    }
+
+    public function avatar()
+    {
+        view('users.avatar');
+    }
 
     public function orderStatus()
     {

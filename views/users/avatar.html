@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <?php view('common.nav') ?>
+
+    <h1>设置头像</h1>
+    <form action="/user/setavatar" method="post" enctype="multipart/form-data">
+        <?php csrf_filed() ?>
+        <div>
+            上传头像:
+            <input type="file" name="avatar">
+        </div>
+
+        <div>
+            <input type="submit" value="上传">
+        </div>
+    </form>
+
+    <?php view('common.footer') ?>
+</body>
+
+</html>
