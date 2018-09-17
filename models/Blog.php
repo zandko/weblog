@@ -4,6 +4,13 @@ namespace models;
 
 class Blog extends Base
 {
+    public function getNew()
+    {
+        $stmt = self::$pdo->prepare("SELECT * FROM blogs ORDER BY created_at DESC LIMIT 10");
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
     // 为某一个日志生成静态页面
     public function makeHtml($id)
     {
@@ -52,7 +59,7 @@ class Blog extends Base
         ]);
 
     }
-    
+
     public function add($title, $content, $is_show)
     {
         $stmt = self::$pdo->prepare("INSERT INTO blogs(title,content,is_show,user_id) VALUES(?,?,?,?)");
