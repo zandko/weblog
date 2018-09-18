@@ -2,6 +2,7 @@
 
 namespace controllers;
 
+use Intervention\Image\ImageManagerStatic as Image;
 use models\Order;
 use models\User;
 
@@ -77,12 +78,21 @@ class UserController
     // 设置头像
     public function setavatar()
     {
+        // 上传新头像
         $upload = \libs\Uploader::make();
         $path = $upload->upload('avatar', 'avatar');
 
-        // 保存到user表中
+        // 裁切图片
+        $image = Image::make(ROOT . 'public/uploads/' . $path);
+        // crop 参数必须是整数
+        $image->crop((int)$_POST['w'], (int)$_POST['h'], (int)$_POST['x'], (int)$_POST['y']);
+        // 保存时覆盖原图
+        $image->save(ROOT . 'public/uploads/' . $path);
+
+        // 保存到user  表中
         $user = new User;
         $user->setAvatar('/uploads/' . $path);
+
         // // 删除原头像
         @unlink(ROOT . 'public' . $_SESSION['avatar']);
 

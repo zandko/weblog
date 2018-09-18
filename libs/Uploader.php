@@ -31,7 +31,7 @@ class Uploader
 
     private $_root = ROOT . 'public/uploads/';
     private $_ext = ['image/jpeg', 'image/jpg', 'image/ejpeg', 'image/png', 'image/gif'];
-    private $_maxSize = 1024 * 1024 * 1.8;
+    private $_maxSize = 1024 * 1024 * 2.0;
     private $_file;
     private $_subDir;
     // 上传图片

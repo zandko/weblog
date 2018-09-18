@@ -5,6 +5,7 @@
         "ezyang/htmlpurifier": "^4.10",
         "yansongda/pay": "^2.4",
         "endroid/qr-code": "^3.4",
-        "phpoffice/phpspreadsheet": "^1.4"
+        "phpoffice/phpspreadsheet": "^1.4",
+        "intervention/image": "^2.4" 
     }
 }
