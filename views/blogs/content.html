@@ -6,6 +6,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <style>
+        .agree-list {
+            border: 1px solid saddlebrown;
+            padding: 0;
+            text-align: center;
+        }
+
+        .agree-list h3 {
+            background-color: #eeeeee;
+            padding: 0;
+            margin: 0;
+        }
+
+        #avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 1px solid skyblue;
+            padding: 5px;
+            margin-left: 20px;
+        }
+    </style>
 </head>
 
 <body>
@@ -19,7 +41,11 @@
     <p>
         <?=$blogs['content']?>
     </p>
-    <img id="btn-agree" src="/images/agree.jpeg" alt="">
+    <img style="cursor:pointer;width: 50px;" id="btn-agree" src="/images/avatar.png" alt="">
+    <div class="agree-list">
+        <h3>点赞列表</h3>
+        <div id="avatar-list"></div>
+    </div>
     <?php view('common.footer') ?>
 </body>
 
@@ -74,4 +100,20 @@
             }
         });
     });
+
+    $.ajax({
+        type: 'GET',
+        url: "/blog/agreements_list?id=" + id,
+        dataType: 'json',
+        success: function (data) {
+            if (data.status == '200') {
+                var html = '';
+                for (var i = 0; i < data.data.length; i++) {
+                    var avatar = data.data[i].avatar ? '/uploads/' + data.data[i].avatar : '/images/avatar.png';
+                    html += '<img title="' + data.data[i].email + '" id="avatar" src="' + data.data[i].avatar + '" alt="">';
+                    $("#avatar-list").html(html);
+                }
+            } 
+        }
+    })
 </script>

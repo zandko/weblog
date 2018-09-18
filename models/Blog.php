@@ -4,6 +4,14 @@ namespace models;
 
 class Blog extends Base
 {
+    public function agreementsList($id)
+    {
+        $stmt = self::$pdo->prepare("SELECT users.id,users.email,users.avatar FROM users LEFT JOIN blog_agrees ON  users.id = blog_agrees.user_id WHERE blog_agrees.blog_id = ? LIMIT 10");
+        $stmt->execute([
+            $id,
+        ]);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
     public function agree($id)
     {
         $stmt = self::$pdo->prepare('SELECT COUNT(*) FROM blog_agrees WHERE user_id=? AND blog_id=?');
@@ -12,7 +20,7 @@ class Blog extends Base
             $id,
         ]);
 
-        $count = $stmt->fetch(PDO::FETCH_COLUMN);
+        $count = $stmt->fetch(\PDO::FETCH_COLUMN);
         if ($count) {
             return false;
         }

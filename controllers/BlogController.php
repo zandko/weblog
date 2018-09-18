@@ -8,6 +8,18 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class BlogController
 {
+    public function agreements_list()
+    {
+        $id = $_GET['id'];
+        $blog = new Blog;
+        $data = $blog->agreementsList($id);
+
+        echo json_encode([
+            'status' => '200',
+            'data' => $data,
+        ]);
+
+    }
     // 点赞
     public function agreements()
     {
