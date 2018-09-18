@@ -4,12 +4,19 @@ namespace models;
 
 class User extends Base
 {
+
+    public function getAll()
+    {
+        $stmt = self::$pdo->query('SELECT * FROM users');
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
     public function setAvatar($path)
     {
         $stmt = self::$pdo->prepare("UPDATE users SET avatar=? WHERE id=?");
-        $data =  $stmt->execute([
+        $data = $stmt->execute([
             $path,
-            $_SESSION['id'], 
+            $_SESSION['id'],
         ]);
 
     }

@@ -19,7 +19,7 @@
             margin: 0;
         }
 
-        #avatar {
+        .avatar {
             width: 50px;
             height: 50px;
             border-radius: 50%;
@@ -109,8 +109,8 @@
             if (data.status == '200') {
                 var html = '';
                 for (var i = 0; i < data.data.length; i++) {
-                    var avatar = data.data[i].avatar ? '/uploads/' + data.data[i].avatar : '/images/avatar.png';
-                    html += '<img title="' + data.data[i].email + '" id="avatar" src="' + data.data[i].avatar + '" alt="">';
+                    var avatar = data.data[i].avatar ? data.data[i].avatar : '/images/avatar.png';
+                    html += '<img title="'+data.data[i].email+'" class="avatar" src="'+avatar+'" alt="">';
                     $("#avatar-list").html(html);
                 }
             } 
