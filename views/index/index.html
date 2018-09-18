@@ -45,7 +45,7 @@
                     }
                 });
 
-
+                <?php if(config('mode') == 'dev'): ?>
                 $("#alluser").change(function(){
                     // 获取选中的值
                     var email = $(this).val()
@@ -62,5 +62,6 @@
                         })
                     }
                 });
+                <?php endif; ?>
                 
 </script>
