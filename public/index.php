@@ -1,9 +1,10 @@
 <?php
+date_default_timezone_set('PRC');
+
 // 使用 redis 保存 SESSION
 ini_set('session.save_handler', 'redis');
 // 设置 redis 服务器的地址、端
 ini_set('session.save_path', 'tcp://127.0.0.1:6379?database=3');
-
 session_start();
 
 // 验证CSRF令牌  如果用户以post方式访问网站时 需要验证令牌
