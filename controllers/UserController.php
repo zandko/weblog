@@ -8,6 +8,12 @@ use models\User;
 
 class UserController
 {
+    public function setActiveUsers()
+    {
+        $user = new User;
+        $user->computeActiveUsers();
+    }
+
     public function uploadbig()
     {
         // 总的数量
@@ -85,7 +91,7 @@ class UserController
         // 裁切图片
         $image = Image::make(ROOT . 'public/uploads/' . $path);
         // crop 参数必须是整数
-        $image->crop((int)$_POST['w'], (int)$_POST['h'], (int)$_POST['x'], (int)$_POST['y']);
+        $image->crop((int) $_POST['w'], (int) $_POST['h'], (int) $_POST['x'], (int) $_POST['y']);
         // 保存时覆盖原图
         $image->save(ROOT . 'public/uploads/' . $path);
 
