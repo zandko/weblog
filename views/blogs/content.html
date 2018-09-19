@@ -27,6 +27,37 @@
             padding: 5px;
             margin-left: 20px;
         }
+
+        .comment-list {
+            border: 1px solid skyblue;
+            margin-top: 10px;
+            padding: 10px;
+        }
+
+        .comment-list .left {
+            float: left;
+            width: 15%;
+            text-align: center;
+        }
+
+        .comment-list .left img {
+            border-radius: 50%;
+        }
+
+        .comment-list .right {
+            float: left;
+            margin-left: 10px;
+            width: 70%;
+        }
+
+        .comment-list .date {
+            color: #999;
+            float: right;
+        }
+
+        .clearfix {
+            clear: both;
+        }
     </style>
 </head>
 
@@ -46,10 +77,37 @@
         <h3>点赞列表</h3>
         <div id="avatar-list"></div>
     </div>
+
+    <h3>评论列表</h3>
+    <div id="comment-app">
+        <div v-for="(v,k) in comments" class="comment-list">
+            <div class="left">
+                <img :src="v.avatar" width="50" height="50" alt="">
+                <p>{{ v.email }}</p>
+            </div>
+            <div class="right">
+                <div class="con">
+                    {{ v.content }}
+                </div>
+                <div class="date">
+                    {{ v.created_at }}
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <br>
+        <form action="">
+            <textarea name="" v-model="content" id="" cols="60" rows="10"></textarea>
+            <br>
+            <input @click="submit" type="button" value="发表评论">
+        </form>
+    </div>
     <?php view('common.footer') ?>
 </body>
 
 </html>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
     crossorigin="anonymous"></script>
 <script>
@@ -110,10 +168,55 @@
                 var html = '';
                 for (var i = 0; i < data.data.length; i++) {
                     var avatar = data.data[i].avatar ? data.data[i].avatar : '/images/avatar.png';
-                    html += '<img title="'+data.data[i].email+'" class="avatar" src="'+avatar+'" alt="">';
+                    html += '<img title="' + data.data[i].email + '" class="avatar" src="' + avatar + '" alt="">';
                     $("#avatar-list").html(html);
                 }
-            } 
+            }
         }
-    })
+    });
+
+    new Vue({
+        el: "#comment-app",
+        data: {
+            content: '',
+            blog_id: "<?=$blogs['id']?>",
+            // 评论列表数据
+            comments: [],
+        },
+
+        created: function () {
+            // 获取初始数据
+            axios.get('/comment/comment_list?id=' + id)
+                .then(res => {
+                    if (res.data.status_code == '200') {
+                        this.comments = res.data.data
+                    }
+                })
+        },
+
+        methods: {
+            submit: function () {
+                // 执行 AJAX 发表评论
+                axios.post('/comment/comments', {
+                    content: this.content,
+                    blog_id: this.blog_id
+                })
+                    .then(res => {
+                        if (res.data.status_code == '200') {
+                            this.comments.unshift({
+                                email: res.data.data.email,
+                                content: res.data.data.content,
+                                created_at: res.data.data.created_at,
+                                avatar: res.data.data.avatar
+                            })
+
+                            this.content = ''
+                        } else {
+                            alert(res.data.message)
+                        }
+                    })
+            }
+        },
+
+    });
 </script>
